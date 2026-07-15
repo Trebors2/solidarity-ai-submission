@@ -326,7 +326,24 @@ form.addEventListener("submit", async event=>{
     data.submittedFrom=window.location.href;
     document.getElementById("payload").value=JSON.stringify(data);
     form.action=WEB_APP_URL;
-    form.submit();
+    form.submit(); setTimeout(() => {
+  submitButton.disabled = false;
+  submitButton.textContent = "Submit contribution";
+
+  statusMessage.className = "status success";
+  statusMessage.innerHTML =
+    "Thank you. Your contribution has been submitted successfully.";
+
+  form.reset();
+  document
+    .querySelectorAll(".format-card")
+    .forEach(card => card.classList.remove("active"));
+
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: "smooth"
+  });
+}, 2500);
   }catch(err){
     statusMessage.className="status error";
     statusMessage.textContent=err.message || "The submission could not be prepared.";
