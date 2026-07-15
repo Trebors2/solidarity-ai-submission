@@ -307,11 +307,7 @@ form.addEventListener("submit", async event=>{
   statusMessage.className="status";
   statusMessage.textContent="";
 
-  if(WEB_APP_URL.includes("https://script.google.com/macros/s/AKfycbwlLvn0QRzFm-gWB6H0wwNSmt3Rv3YdgtszunxZHpm_gz70C5dbK_Qe2B1OAGX6KtJy/exec")){
-    statusMessage.className="status error";
-    statusMessage.textContent="The form has not yet been connected to the Apps Script deployment URL.";
-    return;
-  }
+
   if(!form.checkValidity()){ form.reportValidity(); return; }
 
   const selectedFormat=document.querySelector('input[name="format"]:checked')?.value;
