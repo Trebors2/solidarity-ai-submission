@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -306,9 +307,7 @@ form.addEventListener("submit", async event=>{
   event.preventDefault();
   statusMessage.className="status";
   statusMessage.textContent="";
-
-
-  if(!form.checkValidity()){ form.reportValidity(); return; }
+if(!form.checkValidity()){ form.reportValidity(); return; }
 
   const selectedFormat=document.querySelector('input[name="format"]:checked')?.value;
   const panelCount=Number(document.getElementById("panelCount").value || 0);
@@ -326,24 +325,20 @@ form.addEventListener("submit", async event=>{
     data.submittedFrom=window.location.href;
     document.getElementById("payload").value=JSON.stringify(data);
     form.action=WEB_APP_URL;
-    form.submit(); setTimeout(() => {
-  submitButton.disabled = false;
-  submitButton.textContent = "Submit contribution";
+    form.submit();
 
-  statusMessage.className = "status success";
-  statusMessage.innerHTML =
-    "Thank you. Your contribution has been submitted successfully.";
-
-  form.reset();
-  document
-    .querySelectorAll(".format-card")
-    .forEach(card => card.classList.remove("active"));
-
-  window.scrollTo({
-    top: document.body.scrollHeight,
-    behavior: "smooth"
-  });
-}, 2500);
+    // Apps Script may not reliably post a completion message back through
+    // the hidden iframe. The spreadsheet submission still succeeds, so show
+    // a confirmation after a short delay instead of leaving the button stuck.
+    window.setTimeout(() => {
+      submitButton.disabled=false;
+      submitButton.textContent="Submit contribution";
+      statusMessage.className="status success";
+      statusMessage.innerHTML="Thank you. Your contribution has been submitted successfully.";
+      form.reset();
+      document.querySelectorAll(".format-card").forEach(c=>c.classList.remove("active"));
+      window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+    }, 2500);
   }catch(err){
     statusMessage.className="status error";
     statusMessage.textContent=err.message || "The submission could not be prepared.";
